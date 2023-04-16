@@ -11,6 +11,7 @@ export const meta: V2_MetaFunction = () => {
 
 export default function NotesPage() {
   const notes = useLoaderData();
+
   return (
     <main>
       <NewNote />
@@ -25,10 +26,22 @@ export async function loader() {
 }
 export async function action({ request }: { request: Request }) {
   const formData = await request.formData();
+
+  if (!formData.get("title") || !formData.get("content")) {
+    return { message: "Title and content are required" };
+  }
+
+  const title = formData.get("title")?.toString().trim() ?? "";
+  const content = formData.get("content")?.toString().trim() ?? "";
+
+  if (title.length < 5 || content.length < 5) {
+    return { message: "Title and Content must be more than 5 characters" };
+  }
+
   const note: Note = {
     id: new Date().toISOString(),
-    title: formData.get("title") as string,
-    content: formData.get("content") as string,
+    title: title,
+    content: content,
   };
 
   const existingNotes = await getStoredNotes();
