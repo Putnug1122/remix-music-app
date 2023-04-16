@@ -47,9 +47,7 @@ export function ErrorBoundary({ error }: { error: Error }) {
         </header>
         <main className="error">
           <h1>Something went wrong</h1>
-          <p>
-            <pre>{error.message}</pre>
-          </p>
+          <p>{/* <pre>{error.message}</pre> */}</p>
           <p>
             <Link to="/">Go home</Link>
           </p>
